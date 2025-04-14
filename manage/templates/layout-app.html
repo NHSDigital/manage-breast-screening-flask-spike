@@ -1,0 +1,116 @@
+{% from 'components/header/macro.njk' import header %}
+{% from 'components/footer/macro.njk' import footer %}
+{%- from 'components/skip-link/macro.njk' import skipLink %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+
+    <title>{% block pageTitle %}Manage breast screening{% endblock %}</title>
+
+    <link rel="preload" as="font" href="https://assets.nhs.uk/fonts/FrutigerLTW01-55Roman.woff2" type="font/woff2"
+      crossorigin>
+    <link rel="preload" as="font" href="https://assets.nhs.uk/fonts/FrutigerLTW01-65Bold.woff2" type="font/woff2"
+      crossorigin>
+    <link rel="preconnect  dns-prefetch" href="https://www.nhs.uk/">
+    <link rel="preconnect  dns-prefetch" href="https://assets.nhs.uk/" crossorigin>
+
+    {#- TODO: add nhs-frontend assets -#}
+
+    <style>
+      .app-nowrap {
+        white-space: nowrap;
+      }
+    </style>
+    {% block head %}{% endblock %}
+  </head>
+
+  <body>
+  <script>document.body.className = ((document.body.className) ? document.body.className + ' js-enabled' : 'js-enabled');</script>
+  {% block bodyStart %}{% endblock %}
+
+  {% block skipLink %}
+    {{ skipLink({
+      "href": '#maincontent',
+      "text": 'Skip to main content'
+    }) }}
+  {% endblock %}
+
+  {% block header %}
+    {{ header({
+      "showNav": "true",
+      "service": {
+        "name": "Manage breast screening"
+      },
+      "primaryLinks": [
+        {
+          "url": "#",
+          "label": "Home",
+          "current": true if navActive == "home"
+        },
+        {
+          "url": "/clinics/",
+          "label": "Clinics",
+          'current': true if navActive == "clinics"
+        },
+        {
+          "url": "#",
+          "label": "Image reading",
+          "current": true if navActive == "reading"
+        },
+        {
+          "url": "#",
+          "label": "Participants",
+          "current": true if navActive == "participants"
+        },
+        {
+          "url": "#",
+          "label": "Messages",
+          "current": true if navActive == "messages"
+        }, {
+          "url": "#",
+          "label": "Help and support",
+          "current": true if navActive == "help"
+        }
+      ]
+    }) }}
+  {% endblock %}
+
+  {% block main %}
+    <div class="nhsuk-width-container {{ containerClasses }}">
+      {% block beforeContent %}{% endblock %}
+      <main class="nhsuk-main-wrapper {{ mainClasses }}" id="maincontent" role="main">
+        {% block content %}{% endblock %}
+      </main>
+    </div>
+  {% endblock %}
+
+  {% block footer %}
+    {{ footer({
+      "links": [
+        {
+          "URL": "/",
+          "label": "Home"
+        },
+        {
+          "URL": "/settings",
+          "label": "Settings"
+        },
+        {
+          "URL": "/clear-data",
+          "label": "Clear data"
+        },
+        {
+          "URL": "https://github.com/NHSDigital/manage-screening-events-prototype",
+          "label": "Github"
+        }
+      ]
+    })}}
+  {% endblock %}
+
+  {% block bodyEnd %}{% endblock %}
+  </body>
+</html>
