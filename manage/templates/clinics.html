@@ -60,37 +60,29 @@ All clinics this week
   <tbody class="nhsuk-table__body">
     {% for clinic in filteredClinics | sort(false, false, 'starts_at') %}
     {% set location = clinic.setting %}
-    {% set events = clinic.slots %}
     <tr>
       <td>
         <a href="/clinics/{{ clinic.id }}" class="nhsuk-link">
-          {#- FIXME-#}
-          {% if location.type == 'mobile_unit' %}
-          {{ location.name }} at {{ clinic.siteName }}
-          {% else %}
-          {{ location.name }}
-          {% endif %}
-          <br>
-          ({{ clinic.session_type() | capitalize }})
+          {{ location }}
         </a>
       </td>
       <td>{{ clinic.starts_at | formatDate }}<br>
-        {{clinic.time_range() | formatTimeRange | asHint }}
+        {{"9am to 5pm" | asHint }}
       </td>
       <td>
-        {{ clinic.get_type_display() | capitalize }}
+        {{ clinic.type.value | capitalize }}
         <br>
-        <span class="app-text-grey">{{ clinic.get_risk_type_display() | capitalize }}</span>
+        <span class="nhsuk-text-grey">{{ clinic.risk_type.value | capitalize }}</span>
 
       </td>
 
       <td class="nhsuk-table__cell--numeric">
-        {{ events | length }}
+        {{ 0 }}
       </td>
       <td class="nhsuk-table__cell--numeric">
         {{ tag({
-        "html": clinic.state | formatWords | capitalize | noWrap,
-        "classes": "nhsuk-tag--" + STATUS_COLORS[clinic.state]
+        "html": clinic.status.value | capitalize | noWrap,
+        "classes": "nhsuk-tag--blue" 
         })}}
       </td>
     </tr>
