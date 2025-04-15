@@ -23,7 +23,6 @@ class Clinic(Base):
     setting = Column(String(255), nullable=False)
     starts_at = Column(TIMESTAMP, nullable=False)
     ends_at = Column(TIMESTAMP, nullable=False)
-    location = Column(String(255), nullable=False)
     status = Column(Enum(ClinicStatus), nullable=False, default=ClinicStatus.SCHEDULED)
     type = Column(Enum(ClinicType), nullable=False, default=ClinicType.SCREENING)
     risk_type = Column(Enum(RiskType), nullable=False, default=RiskType.MIXED_RISK)
