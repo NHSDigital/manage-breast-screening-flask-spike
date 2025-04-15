@@ -1,3 +1,17 @@
+# Quickstart
+
+Ensure asdf is installed.
+
+```shell
+asdf install
+pip install poetry
+poetry install
+poetry run alembic upgrade head
+poetry run flask --app manage run --debug
+```
+
+Navigate to http://127.0.0.1:5000 in the browser.
+
 # Repository Template
 
 [![CI/CD Pull Request](https://github.com/nhs-england-tools/repository-template/actions/workflows/cicd-1-pull-request.yaml/badge.svg)](https://github.com/nhs-england-tools/repository-template/actions/workflows/cicd-1-pull-request.yaml)
@@ -16,6 +30,7 @@ Make use of this repository template to expedite your project setup and enhance 
 
 ## Table of Contents
 
+- [Quickstart](#quickstart)
 - [Repository Template](#repository-template)
   - [Table of Contents](#table-of-contents)
   - [Setup](#setup)
