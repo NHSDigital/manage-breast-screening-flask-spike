@@ -1,0 +1,94 @@
+{% extends 'layout-app.html' %}
+
+{%- from 'components/tag/macro.njk' import tag %}
+{%- from '_components/count/macro.njk' import appCount %}
+{%- from '_components/secondary-navigation/macro.njk' import appSecondaryNavigation %}
+
+
+{% set pageHeading %}
+{% if filter == 'today' %}
+Today’s clinics
+{% elif filter == 'upcoming' %}
+Upcoming clinics
+{% elif filter == 'completed' %}
+Completed clinics this week
+{% else %}
+All clinics this week
+{% endif %}
+{% endset %}
+
+{% block content %}
+<h1>{{pageHeading}}</h1>
+
+{% set ns = namespace() %}
+{% set ns.secondaryNavItems = [] %}
+
+{% for item in [
+{ "id": 'today', "label": 'Today' },
+{ "id": 'upcoming', "label": 'Upcoming' },
+{ "id": 'completed', "label": 'Completed' },
+{ "id": 'all', "label": 'All' }
+] %}
+{% set href -%}
+/clinics/{{ item.id }}
+{% endset %}
+{% set ns.secondaryNavItems = ns.secondaryNavItems + [{
+"text": (item.label + " " + appCount(filteredClinicCounts[item.id])) | safe,
+"href": href | trim,
+"current": true if item.id == filter
+}] %}
+{% endfor %}
+
+{{ appSecondaryNavigation({
+"visuallyHiddenTitle": "Secondary menu",
+"items": ns.secondaryNavItems
+}) }}
+
+{% if filteredClinics | length == 0 %}
+<p>No clinics found.</p>
+{% else %}
+<table class="nhsuk-table">
+  <thead class="nhsuk-table__head">
+    <tr>
+      <th scope="col">Location</th>
+      <th scope="col">Date and time</th>
+      <th scope="col">Clinic type</th>
+      <th scope="col" class="nhsuk-table__cell--numeric">Participants</th>
+      <th scope="col">Status</th>
+    </tr>
+  </thead>
+  <tbody class="nhsuk-table__body">
+    {% for clinic in filteredClinics | sort(false, false, 'starts_at') %}
+    {% set location = clinic.setting %}
+    <tr>
+      <td>
+        <a href="/clinics/{{ clinic.id }}" class="nhsuk-link">
+          {{ location }}
+        </a>
+      </td>
+      <td>{{ clinic.starts_at | formatDate }}<br>
+        {{"9am to 5pm" | asHint }}
+      </td>
+      <td>
+        {{ clinic.type.value | capitalize }}
+        <br>
+        <span class="nhsuk-text-grey">{{ clinic.risk_type.value | capitalize }}</span>
+
+      </td>
+
+      <td class="nhsuk-table__cell--numeric">
+        {{ 0 }}
+      </td>
+      <td class="nhsuk-table__cell--numeric">
+        {{ tag({
+        "html": clinic.status.value | capitalize | noWrap,
+        "classes": "nhsuk-tag--blue" 
+        })}}
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+{% endif %}
+{% endblock %}
